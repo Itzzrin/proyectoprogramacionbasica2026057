@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <string>
+#include <string.h> 
 #include <wchar.h>
 #include <stdlib.h>
 #include <fstream>
@@ -23,7 +24,7 @@ void modificacion();
 void baja();
 void lista();
 void archivos();
-void mostrar();
+
 
 int main()
 {
@@ -57,7 +58,6 @@ int main()
 
 		case 6:
 			archivos();
-			mostrar();
 			exit(1);
 			break;
 
@@ -82,20 +82,27 @@ void alta()
 	for (int i = 1; i <= n; i++)
 	{
 		printf("\n\tREGISTRO %d\n", i);
+
+		juegos[i].num = i;
+		printf("Numero de item: %d", juegos[i].num);
+
 		cin.ignore();
 		printf("\nNombre del juego: ");
 		cin.getline(juegos[i].nom, 50);
-		printf("Numero de item: ");
-		scanf_s("%d", &juegos[i].num);
+
 		cin.ignore();
 		printf("Descripcion: ");
 		cin.getline(juegos[i].descrip, 500);
+
 		printf("Genero: ");
 		cin.getline(juegos[i].gen, 50);
+
 		printf("Clasificacion: ");
 		cin.getline(juegos[i].clas, 50);
+
 		printf("Consola: ");
 		cin.getline(juegos[i].con, 50);
+
 		printf("Precio: ");
 		scanf_s("%f", &juegos[i].precio);
 
@@ -200,29 +207,135 @@ void modificacion()
 
 void lista()
 {
-	for (int i = 1; i <= n; i++)
-	{
-		if (juegos[i].status == "ELIMINADO")
-		{
-			printf("----- REGISTRO %d ELIMINADO -----\n", i);
-		}
-		else
-		{
-			printf("----- REGISTRO %d -----\n", i);
-			printf("Nombre: %s\n", juegos[i].nom);
-			printf("# Item: %d\n", juegos[i].num);
-			printf("Descripcion: %s\n", juegos[i].descrip);
-			printf("Genero: %s\n", juegos[i].gen);
-			printf("Clasificacion: %s\n", juegos[i].clas);
-			printf("Consola: %s\n", juegos[i].con);
+	int filtro, fil;
+	char buscar[80];
 
-			juegos[i].IVA = (juegos[i].precio * 16) / 100;
-			juegos[i].preciot = juegos[i].precio + juegos[i].IVA;
-			printf("Precio Base: %5.2f\nIVA: %5.2f\nPrecio Total: %5.2f\n\n", juegos[i].precio, juegos[i].IVA, juegos[i].preciot);
+	printf("¿Desea imprimir toda la lista de registros o hacerlo por filtro?\n1.-Lista Completa\n2.-Por filtro\n");
+	scanf_s("%d", &fil);
+
+	switch (fil)
+	{
+
+	case 1:
+
+		for (int i = 1; i <= n; i++)
+		{
+			if (juegos[i].status == "ELIMINADO")
+			{
+				printf("----- REGISTRO %d ELIMINADO -----\n", i);
+			}
+			else
+			{
+				printf("----- REGISTRO %d -----\n", i);
+				printf("# Item: %d\n", juegos[i].num);
+				printf("Nombre: %s\n", juegos[i].nom);
+				printf("Descripcion: %s\n", juegos[i].descrip);
+				printf("Genero: %s\n", juegos[i].gen);
+				printf("Clasificacion: %s\n", juegos[i].clas);
+				printf("Consola: %s\n", juegos[i].con);
+
+				juegos[i].IVA = (juegos[i].precio * 16) / 100;
+				juegos[i].preciot = juegos[i].precio + juegos[i].IVA;
+				printf("Precio Base: %5.2f\nIVA: %5.2f\nPrecio Total: %5.2f\n\n", juegos[i].precio, juegos[i].IVA, juegos[i].preciot);
+			}
 		}
+		break;
+
+	case 2:
+		printf("\n\t¿Por cual opción desea buscar?\n1.-Genero\n2.-Consola\n3.-Clasificacion\n");
+		scanf_s("%d", &filtro);
+
+		switch (filtro)
+		{
+		case 1:
+			printf("\nIngrese el genero que desea buscar: ");
+			scanf_s("%s", buscar, 80);
+
+			for (int i = 1; i <= n; i++)
+			{
+				if ((strcmp(buscar, juegos[i].gen) == 0) && (juegos[i].status != "ELIMINADO"))
+				{
+
+					printf("----- REGISTRO %d -----\n", i);
+					printf("# Item: %d\n", juegos[i].num);
+					printf("Nombre: %s\n", juegos[i].nom);
+					printf("Descripcion: %s\n", juegos[i].descrip);
+					printf("Genero: %s\n", juegos[i].gen);
+					printf("Clasificacion: %s\n", juegos[i].clas);
+					printf("Consola: %s\n", juegos[i].con);
+
+					juegos[i].IVA = (juegos[i].precio * 16) / 100;
+					juegos[i].preciot = juegos[i].precio + juegos[i].IVA;
+					printf("Precio Base: %5.2f\nIVA: %5.2f\nPrecio Total: %5.2f\n\n", juegos[i].precio, juegos[i].IVA, juegos[i].preciot);
+
+				}
+			}
+
+			break;
+
+		case 2:
+			printf("\nIngrese la consola que desea buscar: ");
+			scanf_s("%s", buscar, 80);
+
+			for (int i = 1; i <= n; i++)
+			{
+				if ((strcmp(buscar, juegos[i].con) == 0) && (juegos[i].status != "ELIMINADO"))
+				{
+
+					printf("----- REGISTRO %d -----\n", i);
+					printf("# Item: %d\n", juegos[i].num);
+					printf("Nombre: %s\n", juegos[i].nom);
+					printf("Descripcion: %s\n", juegos[i].descrip);
+					printf("Genero: %s\n", juegos[i].gen);
+					printf("Clasificacion: %s\n", juegos[i].clas);
+					printf("Consola: %s\n", juegos[i].con);
+
+					juegos[i].IVA = (juegos[i].precio * 16) / 100;
+					juegos[i].preciot = juegos[i].precio + juegos[i].IVA;
+					printf("Precio Base: %5.2f\nIVA: %5.2f\nPrecio Total: %5.2f\n\n", juegos[i].precio, juegos[i].IVA, juegos[i].preciot);
+
+				}
+
+			}
+			break;
+
+
+		case 3:
+			printf("\nIngrese la clasificacion que desea buscar: ");
+			scanf_s("%s", buscar, 80);
+
+			for (int i = 1; i <= n; i++)
+			{
+				if ((strcmp(buscar, juegos[i].clas) == 0) && (juegos[i].status != "ELIMINADO"))
+				{
+
+					printf("----- REGISTRO %d -----\n", i);
+					printf("# Item: %d\n", juegos[i].num);
+					printf("Nombre: %s\n", juegos[i].nom);
+					printf("Descripcion: %s\n", juegos[i].descrip);
+					printf("Genero: %s\n", juegos[i].gen);
+					printf("Clasificacion: %s\n", juegos[i].clas);
+					printf("Consola: %s\n", juegos[i].con);
+
+					juegos[i].IVA = (juegos[i].precio * 16) / 100;
+					juegos[i].preciot = juegos[i].precio + juegos[i].IVA;
+					printf("Precio Base: %5.2f\nIVA: %5.2f\nPrecio Total: %5.2f\n\n", juegos[i].precio, juegos[i].IVA, juegos[i].preciot);
+
+				}
+			}
+			break;
+
+		default: printf("\nNúmero invalido\n");
+			break;
+
+		}
+
+
 	}
 
 }
+
+
 
 void baja()
 {
@@ -264,8 +377,8 @@ void archivos()
 		else
 		{
 			archivo << "\n----- REGISTRO " << i << " -----" << endl;
-			archivo << "NOMBRE: " << juegos[i].nom << endl;
 			archivo << "# ITEM: " << juegos[i].num << endl;
+			archivo << "NOMBRE: " << juegos[i].nom << endl;
 			archivo << "DESCRIPCION: " << juegos[i].descrip << endl;
 			archivo << "GENERO: " << juegos[i].gen << endl;
 			archivo << "CLASIFICACION: " << juegos[i].clas << endl;
@@ -281,23 +394,4 @@ void archivos()
 
 
 	archivo.close();
-}
-
-void mostrar()
-{
-	ifstream archivo("Videojuegos.txt");
-	if (archivo.is_open())
-	{
-		string todo;
-		while (getline(archivo, todo));
-		{
-			cout << todo << endl;
-		}
-		archivo.close();
-	}
-	else
-	{
-		printf("No se pudo abrir el archivo");
-	}
-
 }
